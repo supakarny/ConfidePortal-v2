@@ -1,0 +1,235 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==========================================
+// Module 3 & 4: Login & Logout Management (NextAuth)
+// ==========================================
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String? @db.Text
+  access_token       String? @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String? @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?   // Used for manual account creation
+  
+  accounts      Account[]
+  sessions      Session[]
+  
+  // Relations to other modules
+  employee      Employee?
+  roleId        String?
+  role          Role?     @relation(fields: [roleId], references: [id])
+  
+  auditLogs     AuditLog[]
+  notifications Notification[]
+  
+  approvalRequests ApprovalRequest[]
+  approvalLogs     ApprovalLog[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  @@unique([identifier, token])
+}
+
+// ==========================================
+// Module 1: Employee Information Management
+// ==========================================
+model Employee {
+  id           String   @id @default(cuid())
+  employeeCode String   @unique
+  firstName    String
+  lastName     String
+  phone        String?
+  hireDate     DateTime
+  status       String   @default("ACTIVE") // ACTIVE, ON_LEAVE, TERMINATED
+  
+  userId       String?  @unique
+  user         User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  departmentId String?
+  department   Department? @relation(fields: [departmentId], references: [id])
+  
+  positionId   String?
+  position     Position?   @relation(fields: [positionId], references: [id])
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Department {
+  id          String     @id @default(cuid())
+  name        String     @unique
+  description String?
+  employees   Employee[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Position {
+  id          String     @id @default(cuid())
+  name        String     @unique
+  description String?
+  employees   Employee[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+// ==========================================
+// Module 2: User & Role/Permission Management
+// ==========================================
+model Role {
+  id          String       @id @default(cuid())
+  name        String       @unique // e.g., ADMIN, EMPLOYEE
+  description String?
+  users       User[]
+  permissions Permission[] 
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Permission {
+  id          String   @id @default(cuid())
+  action      String   // e.g., CREATE, READ, UPDATE, DELETE
+  resource    String   // e.g., EMPLOYEE, AUDIT_LOG, ROLE
+  roles       Role[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([action, resource])
+}
+
+// ==========================================
+// Module 5: Notification Management
+// ==========================================
+model Notification {
+  id        String   @id @default(cuid())
+  title     String
+  message   String
+  type      String   // INFO, ALERT, APPROVAL
+  isRead    Boolean  @default(false)
+  
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+}
+
+// ==========================================
+// Module 6: Audit Log Management
+// ==========================================
+model AuditLog {
+  id         String   @id @default(cuid())
+  action     String   // e.g., USER_LOGIN, EMPLOYEE_CREATED
+  resource   String   // e.g., AUTH, EMPLOYEE
+  resourceId String?  // ID of the affected record
+  details    Json?    // Detailed payload of changes
+  ipAddress  String?
+  userAgent  String?
+  
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  
+  createdAt  DateTime @default(now())
+}
+
+// ==========================================
+// Phase 2: Core Approval Engine
+// ==========================================
+
+model ApprovalFlow {
+  id          String   @id @default(cuid())
+  name        String   @unique // e.g., "Leave Request", "Expense Claim"
+  description String?
+  isActive    Boolean  @default(true)
+  
+  steps       ApprovalStep[]
+  requests    ApprovalRequest[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ApprovalStep {
+  id              String   @id @default(cuid())
+  stepOrder       Int      // 1, 2, 3...
+  
+  flowId          String
+  flow            ApprovalFlow @relation(fields: [flowId], references: [id], onDelete: Cascade)
+  
+  approverRoleId  String?  // If assigned to a role (e.g., "HR Manager")
+  approverUserId  String?  // If assigned to a specific user
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@unique([flowId, stepOrder])
+}
+
+model ApprovalRequest {
+  id               String   @id @default(cuid())
+  status           String   @default("PENDING") // PENDING, APPROVED, REJECTED, CANCELLED
+  currentStepOrder Int      @default(1)
+  
+  payload          Json     // Generic payload for the request data
+  
+  flowId           String
+  flow             ApprovalFlow @relation(fields: [flowId], references: [id], onDelete: Cascade)
+  
+  requesterId      String
+  requester        User         @relation(fields: [requesterId], references: [id], onDelete: Cascade)
+  
+  logs             ApprovalLog[]
+  
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model ApprovalLog {
+  id          String   @id @default(cuid())
+  action      String   // APPROVED, REJECTED
+  comments    String?
+  stepOrder   Int
+  
+  requestId   String
+  request     ApprovalRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  
+  approverId  String
+  approver    User            @relation(fields: [approverId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+}

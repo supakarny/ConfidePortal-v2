@@ -1,0 +1,119 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  
+  --radius-xs: 4px;
+  --radius-sm: 5px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* Notion Design System Tokens */
+  --color-primary: #0075de;
+  --color-primary-active: #005bab;
+  --color-secondary: #213183;
+  --color-on-primary: #ffffff;
+  
+  --color-canvas: #ffffff;
+  --color-canvas-soft: #f6f5f4;
+  --color-surface: #ffffff;
+  
+  --color-ink: #000000;
+  --color-ink-secondary: #31302e;
+  --color-ink-muted: #615d59;
+  --color-ink-faint: #a39e98;
+  
+  --color-hairline: #e6e6e6;
+
+  /* Sticker Palette */
+  --color-accent-sky: #62aef0;
+  --color-accent-purple: #d6b6f6;
+  --color-accent-purple-deep: #391c57;
+  --color-accent-pink: #ff64c8;
+  --color-accent-orange: #dd5b00;
+  --color-accent-orange-deep: #793400;
+  --color-accent-teal: #2a9d99;
+  --color-accent-green: #1aae39;
+  --color-accent-brown: #523410;
+
+  /* Overwrite Shadcn default card and border colors for compatibility */
+  --color-card: var(--surface);
+  --color-border: var(--hairline);
+  --color-input: var(--hairline);
+}
+
+:root {
+  --background: #f6f5f4;
+  --foreground: #000000;
+  --card: #ffffff;
+  --card-foreground: #000000;
+  --popover: #ffffff;
+  --popover-foreground: #000000;
+  --primary: #0075de;
+  --primary-foreground: #ffffff;
+  --secondary: #f6f5f4;
+  --secondary-foreground: #000000;
+  --muted: #f6f5f4;
+  --muted-foreground: #615d59;
+  --accent: #f6f5f4;
+  --accent-foreground: #000000;
+  --destructive: #dd5b00; /* Reusing sticker orange as destructive for now */
+  --border: #e6e6e6;
+  --input: #e6e6e6;
+  --ring: #0075de;
+  --radius: 8px;
+  
+  /* Sidebar uses white surface in Notion style */
+  --sidebar: #ffffff;
+  --sidebar-foreground: #000000;
+  --sidebar-primary: #0075de;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f6f5f4;
+  --sidebar-accent-foreground: #000000;
+  --sidebar-border: #e6e6e6;
+  --sidebar-ring: #0075de;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-canvas-soft text-ink tracking-normal leading-relaxed;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+/* Notion-style micro-shadows */
+@layer utilities {
+  .shadow-soft {
+    box-shadow: rgba(0, 0, 0, 0.01) 0 0.175px 1.041px, 
+                rgba(0, 0, 0, 0.02) 0 0.8px 2.925px, 
+                rgba(0, 0, 0, 0.027) 0 2.025px 7.847px, 
+                rgba(0, 0, 0, 0.04) 0 4px 18px;
+  }
+  
+  .shadow-elevated {
+    box-shadow: rgba(0, 0, 0, 0.05) 0 23px 52px;
+  }
+}
