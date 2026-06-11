@@ -7,7 +7,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Activity, ShieldAlert, UserPlus, LogIn, Database } from "lucide-react"
 
 export const metadata = {
   title: "Audit Logs | Confide Portal",
@@ -15,10 +14,10 @@ export const metadata = {
 
 function getActionIcon(action: string) {
   switch (action) {
-    case 'LOGIN': return <LogIn className="w-4 h-4 text-ink-muted" />
-    case 'EMPLOYEE_CREATED': return <UserPlus className="w-4 h-4 text-[#2a9d99]" />
-    case 'ROLE_ASSIGNED': return <ShieldAlert className="w-4 h-4 text-[#dd5b00]" />
-    default: return <Activity className="w-4 h-4 text-ink-faint" />
+    case 'LOGIN': return 'login'
+    case 'EMPLOYEE_CREATED': return 'person_add'
+    case 'ROLE_ASSIGNED': return 'shield'
+    default: return 'activity'
   }
 }
 
@@ -26,65 +25,77 @@ export default async function AuditPage() {
   const logs = await getAuditLogs(50)
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
-      <div className="flex items-center justify-between border-b border-hairline pb-8">
+    <div className="space-y-6 animate-in fade-in duration-500">
+      {/* Page Header */}
+      <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-ibm text-heading-1 font-bold text-ink tracking-tight">System Audit Log</h1>
-          <p className="font-sarabun text-ink-muted text-lg mt-1">Immutable record of all system events and user actions.</p>
+          <p className="text-label-sm text-tertiary uppercase tracking-widest">System</p>
+          <h1 className="text-headline-xl text-on-surface mt-1">System Audit Log</h1>
+          <p className="text-body-md text-secondary mt-1">Immutable record of all system events and user actions.</p>
+        </div>
+        <div className="flex gap-2">
+          <button className="bg-white border border-[#e2e8f0] p-2 rounded-lg text-secondary hover:bg-surface-container-low transition-all">
+            <span className="material-symbols-outlined text-[20px]">filter_list</span>
+          </button>
+          <button className="bg-primary-container text-on-primary-container px-5 py-2.5 rounded-lg font-bold text-body-md hover:opacity-90 transition-all flex items-center gap-2">
+            <span className="material-symbols-outlined text-[20px]">download</span>
+            Export
+          </button>
         </div>
       </div>
 
-      <div className="bg-surface rounded-xl shadow-soft border border-hairline overflow-hidden">
+      {/* Audit Table */}
+      <div className="data-card bg-white rounded-xl overflow-hidden">
         <Table>
-          <TableHeader className="bg-canvas-soft border-b border-hairline">
-            <TableRow className="hover:bg-transparent border-0">
-              <TableHead className="font-sarabun font-semibold text-[12px] uppercase tracking-wider text-ink-muted h-10">Timestamp</TableHead>
-              <TableHead className="font-sarabun font-semibold text-[12px] uppercase tracking-wider text-ink-muted h-10">Action</TableHead>
-              <TableHead className="font-sarabun font-semibold text-[12px] uppercase tracking-wider text-ink-muted h-10">Actor</TableHead>
-              <TableHead className="font-sarabun font-semibold text-[12px] uppercase tracking-wider text-ink-muted h-10">Resource</TableHead>
-              <TableHead className="font-sarabun font-semibold text-[12px] uppercase tracking-wider text-ink-muted h-10">Details</TableHead>
+          <TableHeader>
+            <TableRow className="bg-surface-container-lowest border-b border-[#e2e8f0] hover:bg-transparent">
+              <TableHead className="text-label-sm text-secondary uppercase tracking-wider h-12 px-6">Timestamp</TableHead>
+              <TableHead className="text-label-sm text-secondary uppercase tracking-wider h-12 px-6">Action</TableHead>
+              <TableHead className="text-label-sm text-secondary uppercase tracking-wider h-12 px-6">Actor</TableHead>
+              <TableHead className="text-label-sm text-secondary uppercase tracking-wider h-12 px-6">Resource</TableHead>
+              <TableHead className="text-label-sm text-secondary uppercase tracking-wider h-12 px-6">Details</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {logs.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center py-12 text-ink-muted font-sarabun border-0">
+                <TableCell colSpan={5} className="text-center py-12 text-secondary text-body-md border-0">
                   No audit logs found.
                 </TableCell>
               </TableRow>
             ) : (
               logs.map((log) => (
-                <TableRow key={log.id} className="border-b border-hairline last:border-0 hover:bg-[#fcfcfc] transition-colors">
-                  <TableCell className="font-sarabun text-sm text-ink-secondary whitespace-nowrap">
+                <TableRow key={log.id} className="border-b border-[#e2e8f0] last:border-0 hover:bg-surface-container-low transition-colors">
+                  <TableCell className="px-6 text-mono-data text-secondary whitespace-nowrap">
                     {new Date(log.createdAt).toLocaleString()}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="px-6">
                     <div className="flex items-center gap-2">
-                      {getActionIcon(log.action)}
-                      <span className="font-sarabun font-medium text-ink">{log.action}</span>
+                      <span className="material-symbols-outlined text-primary text-[18px]">{getActionIcon(log.action)}</span>
+                      <span className="text-body-md text-on-surface font-semibold">{log.action}</span>
                     </div>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="px-6">
                     {log.user ? (
                       <div>
-                        <p className="font-sarabun font-medium text-ink">{log.user.name}</p>
-                        <p className="font-sarabun text-sm text-ink-faint">{log.user.email}</p>
+                        <p className="text-body-md text-on-surface font-semibold">{log.user.name}</p>
+                        <p className="text-label-sm text-secondary">{log.user.email}</p>
                       </div>
                     ) : (
-                      <span className="text-sm text-ink-faint font-sarabun italic">SYSTEM</span>
+                      <span className="chip-neutral">SYSTEM</span>
                     )}
                   </TableCell>
-                  <TableCell>
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-[4px] bg-canvas-soft text-ink-secondary text-xs font-sarabun font-medium border border-hairline">
-                      <Database className="w-3 h-3 mr-1 opacity-70" />
+                  <TableCell className="px-6">
+                    <span className="chip-info">
+                      <span className="material-symbols-outlined text-[14px]">database</span>
                       {log.resource}
                     </span>
                     {log.resourceId && (
-                      <p className="text-[11px] text-ink-faint font-mono mt-1">{log.resourceId}</p>
+                      <p className="text-mono-data text-secondary mt-1 text-[11px]">{log.resourceId}</p>
                     )}
                   </TableCell>
-                  <TableCell>
-                    <pre className="text-[11px] text-ink-secondary font-mono bg-canvas-soft p-3 rounded-md border border-hairline max-w-xs overflow-x-auto whitespace-pre-wrap">
+                  <TableCell className="px-6">
+                    <pre className="text-[11px] text-secondary font-mono bg-surface-container-low p-3 rounded-lg border border-[#e2e8f0] max-w-xs overflow-x-auto whitespace-pre-wrap">
                       {JSON.stringify(log.details, null, 2)}
                     </pre>
                   </TableCell>

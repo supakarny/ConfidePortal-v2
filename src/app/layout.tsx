@@ -1,28 +1,31 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans_Thai, Sarabun, Noto_Sans } from "next/font/google";
+import { Plus_Jakarta_Sans, Noto_Sans_Thai, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const ibmPlexSansThai = IBM_Plex_Sans_Thai({
-  weight: ['400', '500', '600', '700'],
-  subsets: ["thai", "latin"],
-  variable: "--font-ibm",
-});
-
-const sarabun = Sarabun({
-  weight: ['400', '500', '600', '700'],
-  subsets: ["thai", "latin"],
-  variable: "--font-sarabun",
-});
-
-const notoSans = Noto_Sans({
-  weight: ['400', '500', '600', '700'],
+const plusJakarta = Plus_Jakarta_Sans({
+  weight: ['400', '500', '600', '700', '800'],
   subsets: ["latin"],
-  variable: "--font-noto",
+  variable: "--font-sans",
+  display: "swap",
+});
+
+const notoSansThai = Noto_Sans_Thai({
+  weight: ['400', '500', '600', '700'],
+  subsets: ["thai"],
+  variable: "--font-thai",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  weight: ['400', '500'],
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
   title: "Confide Portal",
-  description: "Confide Portal - High-end editorial experience for enterprise operations",
+  description: "Confide Portal — Internal operations hub for Confide Technology Co., Ltd.",
 };
 
 export default function RootLayout({
@@ -33,9 +36,17 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${ibmPlexSansThai.variable} ${sarabun.variable} ${notoSans.variable} h-full antialiased`}
+      className={`${plusJakarta.variable} ${notoSansThai.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-sarabun bg-surface text-on-surface">{children}</body>
+      <head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="min-h-full flex flex-col font-sans bg-surface text-on-surface">
+        {children}
+      </body>
     </html>
   );
 }

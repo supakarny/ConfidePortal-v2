@@ -1,15 +1,6 @@
 import { getApprovalFlows } from "@/modules/approval/actions"
 import { getRoles } from "@/modules/role/actions"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import { Plus, Workflow, ArrowRight } from "lucide-react"
 
 export const metadata = {
   title: "Approval Flows | Confide Portal",
@@ -20,69 +11,83 @@ export default async function ApprovalFlowsPage() {
   const roles = await getRoles()
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500 max-w-5xl mx-auto">
-      <div className="flex items-center justify-between border-b border-hairline pb-8">
+    <div className="space-y-6 animate-in fade-in duration-500 max-w-5xl">
+      {/* Page Header */}
+      <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-ibm text-heading-1 font-bold text-ink tracking-tight">Approval Flows</h1>
-          <p className="font-sarabun text-ink-muted text-lg mt-1">Design and manage multi-step routing for internal requests.</p>
+          <p className="text-label-sm text-tertiary uppercase tracking-widest">Admin Console</p>
+          <h1 className="text-headline-xl text-on-surface mt-1">Approval Flows</h1>
+          <p className="text-body-md text-secondary mt-1">Design and manage multi-step routing for internal requests.</p>
         </div>
-        <Button className="bg-primary text-on-primary hover:bg-primary-active rounded-full px-5 py-2 font-sarabun font-medium h-auto shadow-soft">
-          <Plus className="w-4 h-4 mr-2" />
+        <button className="bg-primary text-on-primary px-5 py-2.5 rounded-lg font-bold text-body-md hover:opacity-90 transition-all flex items-center gap-2">
+          <span className="material-symbols-outlined text-[20px]">add</span>
           Create Flow
-        </Button>
+        </button>
       </div>
 
-      <div className="space-y-6">
+      {/* Flow Cards */}
+      <div className="space-y-4">
         {flows.length === 0 ? (
-          <div className="bg-canvas-soft rounded-xl p-16 text-center border border-hairline">
-            <Workflow className="w-12 h-12 mx-auto text-ink-faint mb-4" />
-            <h3 className="font-ibm text-heading-3 font-bold text-ink">No Workflows Configured</h3>
-            <p className="font-sarabun text-ink-secondary mt-2 text-lg">Create your first approval flow to start routing requests.</p>
+          <div className="data-card bg-white rounded-xl p-16 text-center hover:transform-none">
+            <span className="material-symbols-outlined text-[48px] text-outline mb-4">device_hub</span>
+            <h3 className="text-headline-md text-on-surface">No Workflows Configured</h3>
+            <p className="text-body-lg text-secondary mt-2">Create your first approval flow to start routing requests.</p>
           </div>
         ) : (
           flows.map((flow: any) => (
-            <div key={flow.id} className="bg-surface rounded-xl border border-hairline shadow-soft overflow-hidden">
-              <div className="p-6 border-b border-hairline flex items-center justify-between bg-canvas-soft">
+            <div key={flow.id} className="data-card bg-white rounded-xl overflow-hidden hover:transform-none">
+              {/* Flow Header */}
+              <div className="px-6 py-5 border-b border-[#e2e8f0] flex items-center justify-between bg-surface-container-lowest">
                 <div>
-                  <h3 className="font-ibm font-bold text-lg text-ink">{flow.name}</h3>
-                  {flow.description && <p className="font-sarabun text-sm text-ink-secondary mt-1">{flow.description}</p>}
+                  <h3 className="text-headline-md text-on-surface">{flow.name}</h3>
+                  {flow.description && <p className="text-body-md text-secondary mt-1">{flow.description}</p>}
                 </div>
-                <div className="flex items-center gap-4">
-                  <span className="text-xs font-sarabun text-ink-muted bg-[#e6e6e6] px-2 py-1 rounded-sm">
+                <div className="flex items-center gap-3">
+                  <span className="chip-neutral">
                     {flow._count.requests} requests
                   </span>
-                  <Button variant="outline" size="sm" className="font-sarabun text-xs h-8 border-hairline">Edit Flow</Button>
+                  <Button variant="outline" className="text-body-md h-9 border-[#e2e8f0] text-secondary hover:text-primary hover:border-primary">
+                    Edit Flow
+                  </Button>
                 </div>
               </div>
-              <div className="p-6 bg-surface">
-                <p className="font-sarabun text-xs font-semibold text-ink-faint uppercase tracking-wider mb-4">Routing Sequence</p>
+
+              {/* Routing Sequence */}
+              <div className="p-6 bg-white">
+                <p className="text-label-sm text-secondary uppercase tracking-wider mb-4">Routing Sequence</p>
                 <div className="flex items-center gap-3 overflow-x-auto pb-2">
-                  <div className="flex items-center justify-center h-10 px-4 bg-[#f6f5f4] border border-hairline rounded-md font-sarabun text-sm font-medium text-ink-secondary flex-shrink-0">
+                  {/* Start: Requester */}
+                  <div className="flex items-center justify-center h-10 px-4 bg-surface-container-low border border-[#e2e8f0] rounded-lg text-body-md font-semibold text-secondary flex-shrink-0">
+                    <span className="material-symbols-outlined text-[18px] mr-2">person</span>
                     Requester
                   </div>
+
                   {flow.steps.length === 0 ? (
                     <>
-                      <ArrowRight className="w-4 h-4 text-ink-faint flex-shrink-0" />
-                      <div className="flex items-center justify-center h-10 px-4 border border-dashed border-hairline rounded-md font-sarabun text-sm text-ink-faint bg-surface flex-shrink-0">
+                      <span className="material-symbols-outlined text-outline text-[20px] flex-shrink-0">arrow_forward</span>
+                      <div className="flex items-center justify-center h-10 px-4 border border-dashed border-outline-variant rounded-lg text-body-md text-secondary bg-white flex-shrink-0">
                         No steps defined
                       </div>
                     </>
                   ) : (
-                    flow.steps.map((step: any, idx: number) => {
+                    flow.steps.map((step: any) => {
                       const roleName = roles.find(r => r.id === step.approverRoleId)?.name || "Specific User"
                       return (
                         <div key={step.id} className="flex items-center gap-3 flex-shrink-0">
-                          <ArrowRight className="w-4 h-4 text-ink-faint" />
-                          <div className="flex items-center justify-center h-10 px-4 bg-[#e3f2fd] border border-[#bbdefb] rounded-md font-sarabun text-sm font-medium text-primary">
-                            <span className="opacity-50 mr-2 text-xs">{step.stepOrder}.</span>
+                          <span className="material-symbols-outlined text-outline text-[20px]">arrow_forward</span>
+                          <div className="flex items-center justify-center h-10 px-4 bg-primary-container/10 border border-primary/20 rounded-lg text-body-md font-semibold text-primary">
+                            <span className="opacity-50 mr-2 text-label-sm">{step.stepOrder}.</span>
                             {roleName}
                           </div>
                         </div>
                       )
                     })
                   )}
-                  <ArrowRight className="w-4 h-4 text-ink-faint flex-shrink-0" />
-                  <div className="flex items-center justify-center h-10 px-4 bg-[#e8f5e9] border border-[#c8e6c9] rounded-md font-sarabun text-sm font-medium text-[#1aae39] flex-shrink-0">
+
+                  {/* End: Done */}
+                  <span className="material-symbols-outlined text-outline text-[20px] flex-shrink-0">arrow_forward</span>
+                  <div className="flex items-center justify-center h-10 px-4 bg-success-bg border border-success/20 rounded-lg text-body-md font-semibold text-success-text flex-shrink-0">
+                    <span className="material-symbols-outlined text-[18px] mr-2">check_circle</span>
                     Done
                   </div>
                 </div>

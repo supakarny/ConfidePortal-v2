@@ -7,8 +7,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
-import { Shield, Plus } from "lucide-react"
 
 export const metadata = {
   title: "Roles & Permissions | Confide Portal",
@@ -19,79 +17,86 @@ export default async function RolesPage() {
   const users = await getUsersWithRoles()
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
-      <div className="flex items-center justify-between border-b border-hairline pb-8">
+    <div className="space-y-6 animate-in fade-in duration-500">
+      {/* Page Header */}
+      <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-ibm text-heading-1 font-bold text-ink tracking-tight">Roles & Permissions</h1>
-          <p className="font-sarabun text-ink-muted text-lg mt-1">Manage granular access control and assign roles to users.</p>
+          <p className="text-label-sm text-tertiary uppercase tracking-widest">Admin Console</p>
+          <h1 className="text-headline-xl text-on-surface mt-1">Roles & Permissions</h1>
+          <p className="text-body-md text-secondary mt-1">Manage granular access control and assign roles.</p>
         </div>
-        <Button className="bg-surface text-ink border border-hairline hover:bg-canvas-soft rounded-md px-4 py-2 font-sarabun font-medium h-auto shadow-sm">
-          <Plus className="w-4 h-4 mr-2" />
+        <button className="bg-white text-on-surface border border-[#e2e8f0] px-5 py-2.5 rounded-lg font-bold text-body-md hover:bg-surface-container-low transition-colors flex items-center gap-2">
+          <span className="material-symbols-outlined text-[20px]">add</span>
           Create Role
-        </Button>
+        </button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Roles List */}
-        <div className="lg:col-span-1 space-y-4">
+        <div className="lg:col-span-1 space-y-3">
           {roles.map((role) => (
-            <div key={role.id} className="bg-surface p-6 rounded-xl border border-hairline shadow-soft cursor-pointer group">
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-canvas-soft rounded-md">
-                    <Shield className="w-5 h-5 text-ink-muted group-hover:text-ink transition-colors" />
-                  </div>
-                  <div>
-                    <h3 className="font-ibm font-bold text-lg text-ink tracking-tight">{role.name}</h3>
-                    <p className="font-sarabun text-sm text-ink-faint">{role._count.users} users assigned</p>
-                  </div>
+            <div key={role.id} className="data-card bg-white p-5 rounded-xl cursor-pointer group border-l-4 border-l-primary">
+              <div className="flex items-start gap-3">
+                <div className="p-2 bg-primary-container/10 rounded-lg">
+                  <span className="material-symbols-outlined text-primary text-[22px]">shield</span>
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-headline-md text-on-surface leading-tight">{role.name}</h3>
+                  <p className="text-label-sm text-secondary mt-1">{role._count.users} users assigned</p>
+                  {role.description && (
+                    <p className="text-body-md text-secondary mt-2 leading-relaxed">{role.description}</p>
+                  )}
                 </div>
               </div>
-              {role.description && (
-                <p className="mt-4 font-sarabun text-sm text-ink-secondary leading-relaxed">{role.description}</p>
-              )}
             </div>
           ))}
         </div>
 
         {/* User-Role Mapping Table */}
-        <div className="lg:col-span-2 bg-surface rounded-xl shadow-soft border border-hairline overflow-hidden flex flex-col">
-          <div className="p-6 border-b border-hairline bg-canvas-soft">
-            <h3 className="font-ibm font-bold text-lg text-ink tracking-tight">User Role Assignments</h3>
-            <p className="font-sarabun text-sm text-ink-secondary mt-1">Select users to change their system access level.</p>
+        <div className="lg:col-span-2 data-card bg-white rounded-xl overflow-hidden flex flex-col">
+          <div className="px-6 py-5 border-b border-[#e2e8f0]">
+            <h3 className="text-headline-md text-on-surface">User Role Assignments</h3>
+            <p className="text-body-md text-secondary mt-1">Select users to change their system access level.</p>
           </div>
-          
+
           <div className="flex-1 overflow-auto">
             <Table>
-              <TableHeader className="bg-surface">
-                <TableRow className="border-b border-hairline hover:bg-transparent">
-                  <TableHead className="font-sarabun font-semibold text-[12px] uppercase tracking-wider text-ink-muted h-10">User</TableHead>
-                  <TableHead className="font-sarabun font-semibold text-[12px] uppercase tracking-wider text-ink-muted h-10">Department</TableHead>
-                  <TableHead className="font-sarabun font-semibold text-[12px] uppercase tracking-wider text-ink-muted h-10">Assigned Role</TableHead>
+              <TableHeader>
+                <TableRow className="bg-surface-container-lowest border-b border-[#e2e8f0] hover:bg-transparent">
+                  <TableHead className="text-label-sm text-secondary uppercase tracking-wider h-12 px-6">User</TableHead>
+                  <TableHead className="text-label-sm text-secondary uppercase tracking-wider h-12 px-6">Department</TableHead>
+                  <TableHead className="text-label-sm text-secondary uppercase tracking-wider h-12 px-6">Assigned Role</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {users.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={3} className="text-center py-12 text-ink-muted font-sarabun border-0">
+                    <TableCell colSpan={3} className="text-center py-12 text-secondary text-body-md border-0">
                       No users found.
                     </TableCell>
                   </TableRow>
                 ) : (
                   users.map((user) => (
-                    <TableRow key={user.id} className="border-b border-hairline last:border-0 hover:bg-[#fcfcfc] transition-colors">
-                      <TableCell>
-                        <p className="font-sarabun font-medium text-ink">{user.name}</p>
-                        <p className="font-sarabun text-sm text-ink-faint">{user.email}</p>
+                    <TableRow key={user.id} className="border-b border-[#e2e8f0] last:border-0 hover:bg-surface-container-low transition-colors">
+                      <TableCell className="px-6">
+                        <div className="flex items-center gap-3">
+                          <div className="w-9 h-9 rounded-full bg-surface-container-highest text-on-surface flex items-center justify-center font-bold text-label-sm">
+                            {user.name?.[0] || '?'}
+                          </div>
+                          <div>
+                            <p className="text-body-md text-on-surface font-semibold">{user.name}</p>
+                            <p className="text-label-sm text-secondary">{user.email}</p>
+                          </div>
+                        </div>
                       </TableCell>
-                      <TableCell className="font-sarabun text-ink-secondary">
+                      <TableCell className="px-6 text-body-md text-secondary">
                         {user.employee?.department?.name || '-'}
                       </TableCell>
-                      <TableCell>
-                        <span className={`inline-flex items-center px-2 py-0.5 rounded-[4px] text-xs font-sarabun font-medium border ${
+                      <TableCell className="px-6">
+                        <span className={`${
                           user.role?.name === 'ADMIN'
-                            ? 'bg-[#e3f2fd] text-primary border-[#bbdefb]'
-                            : 'bg-[#f3f3f3] text-ink border-[#e0e0e0]'
+                            ? 'chip-info'
+                            : 'chip-neutral'
                         }`}>
                           {user.role?.name || 'Unassigned'}
                         </span>

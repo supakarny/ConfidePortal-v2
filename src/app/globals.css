@@ -4,12 +4,106 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ═══════════════════════════════════════════════════════════
+   Confide Portal — Precision Engineering Interface
+   Design System Tokens (from Stitch MCP)
+   ═══════════════════════════════════════════════════════════ */
+
 @theme inline {
+  /* ─── Fonts ─── */
+  --font-sans: var(--font-sans), "Noto Sans Thai", system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-mono), "JetBrains Mono", ui-monospace, monospace;
+
+  /* ─── Radius (Precision: Soft, not bubbly) ─── */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-full: 9999px;
+
+  /* ─── Colors: Surface System ─── */
+  --color-surface: var(--surface);
+  --color-surface-dim: #cbdbf5;
+  --color-surface-bright: #f8f9ff;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #eff4ff;
+  --color-surface-container: #e5eeff;
+  --color-surface-container-high: #dce9ff;
+  --color-surface-container-highest: #d3e4fe;
+  --color-on-surface: var(--on-surface);
+  --color-on-surface-variant: #3d4948;
+  --color-surface-variant: #d3e4fe;
+  --color-surface-tint: #006a66;
+  --color-inverse-surface: #213145;
+  --color-inverse-on-surface: #eaf1ff;
+
+  /* ─── Colors: Primary (Technical Teal) ─── */
+  --color-primary: var(--primary);
+  --color-on-primary: #ffffff;
+  --color-primary-container: #2ba8a2;
+  --color-on-primary-container: #003634;
+  --color-inverse-primary: #67d8d1;
+  --color-primary-fixed: #85f5ee;
+  --color-primary-fixed-dim: #67d8d1;
+  --color-on-primary-fixed: #00201e;
+  --color-on-primary-fixed-variant: #00504d;
+
+  /* ─── Colors: Secondary (Slate Gray) ─── */
+  --color-secondary: #545f73;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #d5e0f8;
+  --color-on-secondary-container: #586377;
+  --color-secondary-fixed: #d8e3fb;
+  --color-secondary-fixed-dim: #bcc7de;
+
+  /* ─── Colors: Tertiary ─── */
+  --color-tertiary: #006a61;
+  --color-on-tertiary: #ffffff;
+  --color-tertiary-container: #33a89c;
+  --color-on-tertiary-container: #003731;
+
+  /* ─── Colors: Error ─── */
+  --color-error: #ba1a1a;
+  --color-on-error: #ffffff;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
+
+  /* ─── Colors: Outline ─── */
+  --color-outline: #6d7a78;
+  --color-outline-variant: #bcc9c7;
+
+  /* ─── Colors: Background ─── */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  --color-on-background: #0b1c30;
+
+  /* ─── Semantic Status Colors ─── */
+  --color-success: #16a34a;
+  --color-success-bg: #dcfce7;
+  --color-success-text: #166534;
+  --color-warning: #ca8a04;
+  --color-warning-bg: #fef9c3;
+  --color-warning-text: #854d0e;
+  --color-info: #2563eb;
+  --color-info-bg: #dbeafe;
+  --color-info-text: #1e40af;
+
+  /* ─── Shadcn compatibility aliases ─── */
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* ─── Sidebar ─── */
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -18,102 +112,174 @@
   --color-sidebar-primary: var(--sidebar-primary);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar: var(--sidebar);
-  
-  --radius-xs: 4px;
-  --radius-sm: 5px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
-  --radius-full: 9999px;
-
-  /* Notion Design System Tokens */
-  --color-primary: #0075de;
-  --color-primary-active: #005bab;
-  --color-secondary: #213183;
-  --color-on-primary: #ffffff;
-  
-  --color-canvas: #ffffff;
-  --color-canvas-soft: #f6f5f4;
-  --color-surface: #ffffff;
-  
-  --color-ink: #000000;
-  --color-ink-secondary: #31302e;
-  --color-ink-muted: #615d59;
-  --color-ink-faint: #a39e98;
-  
-  --color-hairline: #e6e6e6;
-
-  /* Sticker Palette */
-  --color-accent-sky: #62aef0;
-  --color-accent-purple: #d6b6f6;
-  --color-accent-purple-deep: #391c57;
-  --color-accent-pink: #ff64c8;
-  --color-accent-orange: #dd5b00;
-  --color-accent-orange-deep: #793400;
-  --color-accent-teal: #2a9d99;
-  --color-accent-green: #1aae39;
-  --color-accent-brown: #523410;
-
-  /* Overwrite Shadcn default card and border colors for compatibility */
-  --color-card: var(--surface);
-  --color-border: var(--hairline);
-  --color-input: var(--hairline);
 }
 
 :root {
-  --background: #f6f5f4;
-  --foreground: #000000;
+  /* ─── Base Tokens ─── */
+  --background: #f8f9ff;
+  --foreground: #0b1c30;
+  --surface: #f8f9ff;
+  --on-surface: #0b1c30;
+  --primary: #006a66;
+
+  /* ─── Shadcn core tokens ─── */
   --card: #ffffff;
-  --card-foreground: #000000;
+  --card-foreground: #0b1c30;
   --popover: #ffffff;
-  --popover-foreground: #000000;
-  --primary: #0075de;
+  --popover-foreground: #0b1c30;
   --primary-foreground: #ffffff;
-  --secondary: #f6f5f4;
-  --secondary-foreground: #000000;
-  --muted: #f6f5f4;
-  --muted-foreground: #615d59;
-  --accent: #f6f5f4;
-  --accent-foreground: #000000;
-  --destructive: #dd5b00; /* Reusing sticker orange as destructive for now */
-  --border: #e6e6e6;
-  --input: #e6e6e6;
-  --ring: #0075de;
-  --radius: 8px;
-  
-  /* Sidebar uses white surface in Notion style */
+  --secondary: #eff4ff;
+  --secondary-foreground: #0b1c30;
+  --muted: #eff4ff;
+  --muted-foreground: #545f73;
+  --accent: #e5eeff;
+  --accent-foreground: #0b1c30;
+  --destructive: #ba1a1a;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #006a66;
+  --radius: 6px;
+
+  /* ─── Sidebar tokens ─── */
   --sidebar: #ffffff;
-  --sidebar-foreground: #000000;
-  --sidebar-primary: #0075de;
+  --sidebar-foreground: #0b1c30;
+  --sidebar-primary: #006a66;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f6f5f4;
-  --sidebar-accent-foreground: #000000;
-  --sidebar-border: #e6e6e6;
-  --sidebar-ring: #0075de;
+  --sidebar-accent: #eff4ff;
+  --sidebar-accent-foreground: #0b1c30;
+  --sidebar-border: #e2e8f0;
+  --sidebar-ring: #006a66;
 }
 
+/* ═══════════════════════════════════════════════════════════
+   Base Layer
+   ═══════════════════════════════════════════════════════════ */
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-canvas-soft text-ink tracking-normal leading-relaxed;
+    @apply bg-surface text-on-surface leading-relaxed;
+    font-family: var(--font-sans), "Noto Sans Thai", system-ui, sans-serif;
   }
   html {
-    @apply font-sans;
+    font-family: var(--font-sans), "Noto Sans Thai", system-ui, sans-serif;
   }
 }
 
-/* Notion-style micro-shadows */
+/* ═══════════════════════════════════════════════════════════
+   Utility Classes — Precision Engineering
+   ═══════════════════════════════════════════════════════════ */
 @layer utilities {
-  .shadow-soft {
-    box-shadow: rgba(0, 0, 0, 0.01) 0 0.175px 1.041px, 
-                rgba(0, 0, 0, 0.02) 0 0.8px 2.925px, 
-                rgba(0, 0, 0, 0.027) 0 2.025px 7.847px, 
-                rgba(0, 0, 0, 0.04) 0 4px 18px;
+  /* ─── Data Card (Level 1 Elevation) ─── */
+  .data-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.04);
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
   }
-  
-  .shadow-elevated {
-    box-shadow: rgba(0, 0, 0, 0.05) 0 23px 52px;
+  .data-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.06);
   }
+
+  /* ─── Elevated Card (Level 2: Modals/Dropdowns) ─── */
+  .elevated-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.08);
+  }
+
+  /* ─── Technical Grid Background ─── */
+  .technical-grid {
+    background-size: 40px 40px;
+    background-image:
+      linear-gradient(to right, rgba(0, 106, 102, 0.02) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0, 106, 102, 0.02) 1px, transparent 1px);
+  }
+
+  /* ─── Chart Gradient ─── */
+  .chart-gradient {
+    background: linear-gradient(180deg, rgba(43, 168, 162, 0.1) 0%, rgba(43, 168, 162, 0) 100%);
+  }
+
+  /* ─── Status Chips ─── */
+  .chip-success {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold;
+    background: rgba(22, 163, 74, 0.1);
+    color: #166534;
+  }
+  .chip-warning {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold;
+    background: rgba(202, 138, 4, 0.1);
+    color: #854d0e;
+  }
+  .chip-error {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold;
+    background: rgba(186, 26, 26, 0.1);
+    color: #93000a;
+  }
+  .chip-info {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold;
+    background: rgba(0, 106, 102, 0.1);
+    color: #006a66;
+  }
+  .chip-neutral {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold;
+    background: #eff4ff;
+    color: #545f73;
+  }
+
+  /* ─── Typography Presets ─── */
+  .text-headline-xl {
+    font-size: 30px;
+    line-height: 38px;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
+  .text-headline-md {
+    font-size: 20px;
+    line-height: 28px;
+    letter-spacing: -0.01em;
+    font-weight: 600;
+  }
+  .text-body-lg {
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+  }
+  .text-body-md {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 400;
+  }
+  .text-label-sm {
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+  .text-mono-data {
+    font-family: var(--font-mono), "JetBrains Mono", ui-monospace, monospace;
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 500;
+  }
+
+  /* ─── Scrollbar Styling ─── */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #bcc9c7;
+    border-radius: 10px;
+  }
+}
+
+/* ─── Material Symbols ─── */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }

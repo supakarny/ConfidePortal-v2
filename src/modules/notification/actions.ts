@@ -52,7 +52,6 @@ export async function createSystemNotification(data: {
         title: data.title,
         message: data.message,
         type: data.type || 'SYSTEM',
-        link: data.link,
       }
     })
     revalidatePath("/notifications")
